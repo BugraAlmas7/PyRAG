@@ -1,32 +1,26 @@
 import flet as ft
 import requests
 
-# Backend Adresimiz
 API_URL = "http://127.0.0.1:8000"
 
 def main(page: ft.Page):
-    # --- 1. AYARLAR ---
-    page.title = "Mistik Super App"
+    page.title = "Fortune App"
     page.theme_mode = ft.ThemeMode.DARK
     page.bgcolor = "#0e0018"
     page.padding = 0
     page.window_width = 390
     page.window_height = 844
     
-    # Fontlar
     page.fonts = {
         "Mistik": "https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap",
     }
     page.theme = ft.Theme(font_family="Mistik")
-
-    # --- 2. GLOBAL DEĞİŞKENLER ---
+    
     aktif_mod = {"tip": None} 
     aktif_label = {"kontrol": None} 
 
-    # --- 3. ANA SAHNE KUTUSU ---
     ana_sahne = ft.Container(expand=True) 
 
-    # --- 4. DOSYA SEÇİCİ (FilePicker) ---
     def dosya_secildi(e: ft.FilePickerResultEvent):
         if not e.files: return
         
@@ -69,13 +63,11 @@ def main(page: ft.Page):
                 label.value = f"Hata: {str(hata)}"
                 label.update()
 
-    # Seçiciyi oluştur
     secici = ft.FilePicker()
     secici.on_result = dosya_secildi
     page.overlay.append(secici)
-    page.update() # ÖNEMLİ: Kırmızı şerit hatasını çözen hamle!
+    page.update()
 
-    # --- 5. EKRAN DEĞİŞTİRİCİ ---
     def sahne_degistir(icerik_listesi, baslik=None, geri_butonu=False):
         ust_bar = ft.Container()
         if baslik:
@@ -106,7 +98,6 @@ def main(page: ft.Page):
         )
         ana_sahne.update()
 
-    # --- 6. MENÜ BUTONU ---
     def menu_btn(isim, ikon_url, tiklama_func):
         return ft.Container(
             width=150, height=150, bgcolor="#240038", border_radius=20,
@@ -121,11 +112,6 @@ def main(page: ft.Page):
             )
         )
 
-    # ==========================
-    # === SAYFALAR ===
-    # ==========================
-
-    # KAHVE
     def sayfa_kahve():
         sonuc = ft.Text("Fincanını yükle...", text_align="center")
         def tikla(e):
@@ -143,7 +129,6 @@ def main(page: ft.Page):
             ft.Container(content=sonuc, padding=20, bgcolor="#240038", border_radius=10)
         ], baslik="Kahve Falı", geri_butonu=True)
 
-    # RÜYA
     def sayfa_ruya():
         sonuc = ft.Text("Ses kaydını yükle...", text_align="center")
         def tikla(e):
@@ -158,7 +143,6 @@ def main(page: ft.Page):
             ft.Container(content=sonuc, padding=20, bgcolor="#240038", border_radius=10)
         ], baslik="Rüya Tabiri", geri_butonu=True)
 
-    # EL FALI
     def sayfa_el():
         sonuc = ft.Text("El fotoğrafını yükle...", text_align="center")
         def tikla(e):
@@ -173,9 +157,7 @@ def main(page: ft.Page):
             ft.Container(content=sonuc, padding=20, bgcolor="#240038", border_radius=10)
         ], baslik="El Falı", geri_butonu=True)
 
-    # TAROT (DÜZELTİLEN KISIM BURASI)
     def sayfa_tarot():
-        # Dijital
         d_img = ft.Image(src="https://i.pinimg.com/736x/88/ed/5e/88ed5e8249822a10c710d0f5899d4546.jpg", width=200, height=350, border_radius=15)
         d_lbl = ft.Text("Karta dokun...", text_align="center")
         def d_tikla(e):
@@ -189,14 +171,12 @@ def main(page: ft.Page):
             d_img.update()
             d_lbl.update()
 
-        # Foto
         f_lbl = ft.Text("Fotoğraf yükle...", text_align="center")
         def f_tikla(e):
             aktif_mod["tip"] = "tarot"
             aktif_label["kontrol"] = f_lbl
             secici.pick_files()
 
-        # DÜZELTME: text="..." yerine content=ft.Text("...") kullanıyoruz.
         tabs = ft.Tabs(
             selected_index=0, 
             tabs=[
@@ -217,7 +197,6 @@ def main(page: ft.Page):
         tabs.on_change = tab_degis
         sahne_degistir([tabs, govde], baslik="Tarot Falı", geri_butonu=True)
 
-    # BURÇ
     def sayfa_burc():
         dd = ft.Dropdown(options=[ft.dropdown.Option(b) for b in ["Koç","Boğa","İkizler","Yengeç","Aslan","Başak","Terazi","Akrep","Yay","Oğlak","Kova","Balık"]], label="Burcun")
         lbl = ft.Text("Seç ve gör...", selectable=True)
@@ -233,7 +212,6 @@ def main(page: ft.Page):
         
         sahne_degistir([dd, ft.ElevatedButton("Yorumla", on_click=getir), ft.Container(content=lbl, padding=20)], baslik="Günlük Burç", geri_butonu=True)
 
-    # AŞK
     def sayfa_ask():
         ad1 = ft.TextField(label="Senin Adın")
         ad2 = ft.TextField(label="Partnerin Adı")
@@ -252,7 +230,6 @@ def main(page: ft.Page):
 
         sahne_degistir([ad1, ad2, ft.ElevatedButton("Analiz Et", on_click=hesapla), ft.Container(content=lbl, padding=20)], baslik="Aşk Uyumu", geri_butonu=True)
 
-    # AYNA
     def sayfa_ayna():
         chat_list = ft.ListView(expand=True, spacing=10, padding=20, height=400)
         msg_in = ft.TextField(hint_text="Yaz...", expand=True)
@@ -282,7 +259,6 @@ def main(page: ft.Page):
             ft.Row([ft.IconButton(icon=ft.icons.CAMERA_ALT, on_click=foto_bas), msg_in, ft.IconButton(icon=ft.icons.SEND, on_click=gonder)])
         ], baslik="Sihirli Ayna", geri_butonu=True)
 
-    # --- ANA MENÜ ---
     def ana_menuyu_getir():
         satir1 = ft.Row([menu_btn("Rüya", "https://cdn-icons-png.flaticon.com/512/3656/3656986.png", sayfa_ruya), menu_btn("Kahve", "https://cdn-icons-png.flaticon.com/512/3054/3054889.png", sayfa_kahve)], alignment="center")
         satir2 = ft.Row([menu_btn("Tarot", "https://cdn-icons-png.flaticon.com/512/3309/3309995.png", sayfa_tarot), menu_btn("Ayna", "https://cdn-icons-png.flaticon.com/512/867/867906.png", sayfa_ayna)], alignment="center")
@@ -296,7 +272,6 @@ def main(page: ft.Page):
             satir3
         ], baslik="MİSTİK APP", geri_butonu=False)
 
-    # Uygulamayı başlat
     page.add(ana_sahne)
     ana_menuyu_getir()
 

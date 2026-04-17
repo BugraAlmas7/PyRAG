@@ -29,7 +29,7 @@ def main(page: ft.Page):
         label = aktif_label["kontrol"]
         
         if label:
-            label.value = "Dosya alındı, analiz ediliyor... ⏳"
+            label.value = "Dosya alındı, analiz ediliyor..."
             label.update()
 
         try:
@@ -124,7 +124,7 @@ def main(page: ft.Page):
             ft.Image(src="https://cdn-icons-png.flaticon.com/512/3054/3054889.png", width=100, color="brown"),
             ft.Text("Neyse halim çıksın falim!", italic=True),
             ft.Container(height=20),
-            ft.ElevatedButton("Fincan Yükle 📸", on_click=tikla, bgcolor="brown", color="white"),
+            ft.ElevatedButton("Fincan Yükle", on_click=tikla, bgcolor="brown", color="white"),
             ft.Container(height=20),
             ft.Container(content=sonuc, padding=20, bgcolor="#240038", border_radius=10)
         ], baslik="Kahve Falı", geri_butonu=True)
@@ -138,7 +138,7 @@ def main(page: ft.Page):
 
         sahne_degistir([
             ft.Icon(name=ft.icons.BEDTIME, size=80, color="blue"),
-            ft.ElevatedButton("Ses Dosyası Seç 🎙️", on_click=tikla, bgcolor="blue", color="white"),
+            ft.ElevatedButton("Ses Dosyası Seç", on_click=tikla, bgcolor="blue", color="white"),
             ft.Container(height=20),
             ft.Container(content=sonuc, padding=20, bgcolor="#240038", border_radius=10)
         ], baslik="Rüya Tabiri", geri_butonu=True)
@@ -152,7 +152,7 @@ def main(page: ft.Page):
 
         sahne_degistir([
             ft.Icon(name=ft.icons.BACK_HAND, size=80, color="orange"),
-            ft.ElevatedButton("El Fotoğrafı Seç ✋", on_click=tikla, bgcolor="orange", color="white"),
+            ft.ElevatedButton("El Fotoğrafı Seç", on_click=tikla, bgcolor="orange", color="white"),
             ft.Container(height=20),
             ft.Container(content=sonuc, padding=20, bgcolor="#240038", border_radius=10)
         ], baslik="El Falı", geri_butonu=True)
@@ -270,7 +270,7 @@ def main(page: ft.Page):
             satir1, ft.Divider(height=10, color="transparent"),
             satir2, ft.Divider(height=10, color="transparent"),
             satir3
-        ], baslik="MİSTİK APP", geri_butonu=False)
+        ], baslik="FORTUNE APP", geri_butonu=False)
 
     page.add(ana_sahne)
     ana_menuyu_getir()
